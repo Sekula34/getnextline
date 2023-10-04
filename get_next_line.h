@@ -12,9 +12,15 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 80
+# endif
 # include <stdlib.h>
 # include <unistd.h>
 
+void	*ft_calloc1(size_t nmemb, size_t size);
 char	*get_next_line(int fd);
+long	get_position_of_first_newline(char *s);
+
 
 #endif
