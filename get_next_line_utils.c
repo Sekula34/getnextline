@@ -24,7 +24,7 @@ void	*ft_calloc1(size_t nmemb, size_t size)
 	if (p == NULL)
 		return (NULL);
 	s = (char *)p;
-	n = nmemb * sizeof(char); 
+	n = nmemb * sizeof(char);
 	while (n > 0)
 	{
 		s[i] = '\0';
@@ -34,9 +34,21 @@ void	*ft_calloc1(size_t nmemb, size_t size)
 	return (p);
 }
 
+size_t	ft_strlen1(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
 long	get_position_of_first_newline(char *s)
 {
-	long i;
+	long	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -46,4 +58,56 @@ long	get_position_of_first_newline(char *s)
 		i ++;
 	}
 	return (-1);
+}
+
+char	*ft_strjoin1(char const *s1, char const *s2)
+{
+	size_t	size_new_string;
+	char	*p;
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	i = 0;
+	size_new_string = ft_strlen1(s1) + ft_strlen1(s2) + 1;
+	p = ft_calloc1(size_new_string, sizeof(char));
+	if (p == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	while (s2[j] != '\0')
+	{
+		p[i] = s2[j];
+		j++;
+		i++;
+	}
+	return (p);
+}
+
+char	*ft_substr1(char const *s, unsigned int start, size_t len)
+{
+	char	*p;
+	size_t	i;
+
+	i = 0;
+	if (start >= ft_strlen1(s) || len == 0)
+	{
+		p = ft_calloc1(1, 1);
+		return (p);
+	}
+	if (len > ft_strlen1(s + start))
+		len = ft_strlen1(s + start);
+	p = ft_calloc1(len + 1, sizeof(char));
+	if (p == NULL)
+		return (NULL);
+	while ((i < len) && (s[start] != '\0'))
+	{
+		p[i] = s[start];
+		i++;
+		start++;
+	}
+	return (p);
 }
