@@ -77,12 +77,12 @@ char	*ft_strjoin1(char const *s1, char const *s2)
 	p = ft_calloc1(size_new_string, sizeof(char));
 	if (p == NULL)
 		return (NULL);
-	while (s1[i] != '\0' && s1 != NULL)
+	while (s1 != NULL && s1[i] != '\0')
 	{
 		p[i] = s1[i];
 		i++;
 	}
-	while (s2[j] != '\0' && s2 != NULL)
+	while (s2 != NULL && s2[j] != '\0')
 	{
 		p[i] = s2[j];
 		j++;
