@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-int	fill_buffer(char *full_string, int fd)
+int	fill_buffer(char **full_string, int fd)
 {
 	int		i;
 	char	*read_buffer;
@@ -25,7 +25,7 @@ int	fill_buffer(char *full_string, int fd)
 		read_buffer = ft_calloc1(BUFFER_SIZE + 1, sizeof(char));
 		if(read_buffer == NULL)
 		{
-			if(full_string != NULL)
+			if(*full_string != NULL)
 				free(full_string); 
 			return (-1);
 		}
@@ -34,30 +34,36 @@ int	fill_buffer(char *full_string, int fd)
 			i = -1;
 		if (control == 0)
 			return (0);
-		p = full_string;
-		full_string = ft_strjoin1(full_string, read_buffer);
+		p = *full_string;
+		*full_string = ft_strjoin1(read_buffer, p);
 		if (p != NULL)
 			free (p);
 		free(read_buffer);
-		if (full_string == NULL)
+		if (*full_string == NULL)
 			return (-1);
 	}
 	return (1);
 }
 
-int	get_return_value(char *string_to_return, char *full_string)
+int	get_return_value(char **string_to_return, char **full_string, int control)
 {
 	char *p;
 	int shift;
 
-	shift = get_position_of_first_newline(full_string);
+	if(control == 0)
+	{
+		*string_to_return = NULL;
+		return (-1);
+	}
+	
+	shift = get_position_of_first_newline(*full_string);
 	if (shift < 0)
 		shift = 0;
-	p = full_string + shift;
-	free(full_string);
-	full_string = ft_strjoin1(p,"");
-	string_to_return = ft_substr1(p, 0, ft_strlen1(p));
-	free(p);
+	p = *full_string + shift;
+	free(*full_string);
+	*full_string = ft_strjoin1(p,"");
+	*string_to_return = ft_substr1(p, 0, ft_strlen1(p));
+	//free(p);
 	return (0);
 }
 
@@ -67,11 +73,12 @@ char	*get_next_line(int fd)
 	static char	*full_string = NULL;
 	int			control;
 
+	control = 0;
 	string_to_return = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	if (get_position_of_first_newline(full_string) < 0)
-		control = fill_buffer(full_string, fd);
-	get_return_value(string_to_return, full_string);
+		control = fill_buffer(&full_string, fd);
+	get_return_value(&string_to_return, &full_string, control);
 	return (string_to_return);
 }
