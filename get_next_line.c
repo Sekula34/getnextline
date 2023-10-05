@@ -35,7 +35,7 @@ int	fill_buffer(char *full_string, int fd)
 		if (control == 0)
 			return (0);
 		p = full_string;
-		full_string = ft_strjoin1(p, read_buffer);
+		full_string = ft_strjoin1(full_string, read_buffer);
 		if (p != NULL)
 			free (p);
 		free(read_buffer);
@@ -58,6 +58,7 @@ int	get_return_value(char *string_to_return, char *full_string)
 	full_string = ft_strjoin1(p,"");
 	string_to_return = ft_substr1(p, 0, ft_strlen1(p));
 	free(p);
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -66,9 +67,9 @@ char	*get_next_line(int fd)
 	static char	*full_string = NULL;
 	int			control;
 
+	string_to_return = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	return (NULL);
 	if (get_position_of_first_newline(full_string) < 0)
 		control = fill_buffer(full_string, fd);
 	get_return_value(string_to_return, full_string);
