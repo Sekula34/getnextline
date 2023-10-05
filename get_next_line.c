@@ -12,41 +12,65 @@
 
 #include "get_next_line.h"
 
-int	first_and_last_case(int number, char *big_buffer)
+int	fill_buffer(char *full_string, int fd)
 {
-	if (number == 1)
+	int		i;
+	char	*read_buffer;
+	int		control;
+	char	*p;
+
+	i = 1;
+	while(i)
 	{
-		big_buffer = ft_calloc1(BUFFER_SIZE, sizeof(char));
-		if (big_buffer == NULL)
-			return (-1); 
-	}
-	if (number == 0)
-	{
-		free(big_buffer);
-		return (0);
+		read_buffer = ft_calloc1(BUFFER_SIZE + 1, sizeof(char));
+		if(read_buffer == NULL)
+		{
+			if(full_string != NULL)
+				free(full_string); 
+			return (-1);
+		}
+		control = read(fd, read_buffer, BUFFER_SIZE);
+		if (get_position_of_first_newline(read_buffer) >= 0)
+			i = -1;
+		if (control == 0)
+			return (0);
+		p = full_string;
+		full_string = ft_strjoin1(p, read_buffer);
+		if (p != NULL)
+			free (p);
+		free(read_buffer);
+		if (full_string == NULL)
+			return (-1);
 	}
 	return (1);
 }
 
-int	filling_big_buffer_til_newline(char *big_buffer)
+int	get_return_value(char *string_to_return, char *full_string)
 {
-	
+	char *p;
+	int shift;
+
+	shift = get_position_of_first_newline(full_string);
+	if (shift < 0)
+		shift = 0;
+	p = full_string + shift;
+	free(full_string);
+	full_string = ft_strjoin1(p,"");
+	string_to_return = ft_substr1(p, 0, ft_strlen1(p));
+	free(p);
 }
 
 char	*get_next_line(int fd)
 {
-	static char *big_buffer; 
-	static long	called = 0;
+	char		*string_to_return;
+	static char	*full_string = NULL;
+	int			control;
 
-	if (fd < 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	called ++;
-	if (first_and_last_case(called, big_buffer) <= 0)
-		return(NULL);
-	if(get_position_of_first_newline(big_buffer) == -1)
-	{
-
-	}
-
-
+	return (NULL);
+	if (get_position_of_first_newline(full_string) < 0)
+		control = fill_buffer(full_string, fd);
+	get_return_value(string_to_return, full_string);
+	return (string_to_return);
 }
