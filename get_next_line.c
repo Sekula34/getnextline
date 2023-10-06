@@ -41,14 +41,18 @@ int	fill_buffer(char **full_string, int fd)
 	return (1);
 }
 
-void	get_return_value(char **string_to_return, char **full_string)
+void	get_return_value(char **string_to_return, char **full_string, int *control)
 {
 	long	position;
 	char	*to_delete;
 
 	position = get_position_of_first_newline(*full_string);
 	if (position < 0)
-		string_to_return = full_string;
+	{
+		*string_to_return = *full_string;
+		*control = -1;
+		return ;
+	}
 	*string_to_return = ft_substr1(*full_string, 0, position + 1);
 	to_delete = *full_string;
 	*full_string = ft_strjoin1(*full_string + position + 1, "");
@@ -62,18 +66,20 @@ char	*get_next_line(int fd)
 	static int	control = 1;
 
 	string_to_return = NULL;
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || control == -1)
 		return (NULL);
 	if (get_position_of_first_newline(full_string) < 0 || control == 0)
 	{
-		control = fill_buffer(&full_string, fd);
+		if(control != 0)
+			control = fill_buffer(&full_string, fd);
 		if(control == -1)
 		{
 			if (full_string != NULL)
 				free (full_string);
+	
 			return (NULL);
 		}
 	}
-	get_return_value(&string_to_return, &full_string);
+	get_return_value(&string_to_return, &full_string, &control);
 	return (string_to_return);
 }
