@@ -29,11 +29,10 @@ int	fill_buffer(char **full_string, int fd)
 		if (get_position_of_first_newline(read_buffer) >= 0)
 			i = -1;
 		if (control <= 0)
-			return (0);
+			return (free(read_buffer), 0);
 		p = *full_string;
 		*full_string = ft_strjoin1(p, read_buffer);
-		if (p != NULL)
-			free (p);
+		free (p);
 		free(read_buffer);
 		if (*full_string == NULL)
 			return (-1);
