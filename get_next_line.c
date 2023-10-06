@@ -48,10 +48,10 @@ void	get_return_value(char **string_to_return, char **full_string)
 
 	position = get_position_of_first_newline(*full_string);
 	if (position < 0)
-		return (*full_string);
+		string_to_return = full_string;
 	*string_to_return = ft_substr1(*full_string, 0, position + 1);
 	to_delete = *full_string;
-	*full_string = ft_strjoin1(full_string + position + 1, "");
+	*full_string = ft_strjoin1(*full_string + position + 1, "");
 	free(to_delete);
 }
 
