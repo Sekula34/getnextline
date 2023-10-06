@@ -31,7 +31,7 @@ int	fill_buffer(char **full_string, int fd)
 		if (control <= 0)
 			return (0);
 		p = *full_string;
-		*full_string = ft_strjoin1(read_buffer, p);
+		*full_string = ft_strjoin1(p, read_buffer);
 		if (p != NULL)
 			free (p);
 		free(read_buffer);
