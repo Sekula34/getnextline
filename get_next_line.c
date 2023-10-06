@@ -53,6 +53,8 @@ void	get_return_value(char **string_to_return, char **full_string, int *control)
 		return ;
 	}
 	*string_to_return = ft_substr1(*full_string, 0, position + 1);
+	if(*string_to_return == NULL)
+		return (free(*full_string));
 	to_delete = *full_string;
 	*full_string = ft_strjoin1(*full_string + position + 1, "");
 	free(to_delete);
@@ -73,9 +75,8 @@ char	*get_next_line(int fd)
 			control = fill_buffer(&full_string, fd);
 		if(control == -1)
 		{
-			if (full_string != NULL)
-				free (full_string);
-	
+			if(full_string != NULL)
+				free (full_string); //can be null before
 			return (NULL);
 		}
 	}
