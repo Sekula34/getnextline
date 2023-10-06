@@ -24,15 +24,11 @@ int	fill_buffer(char **full_string, int fd)
 	{
 		read_buffer = ft_calloc1(BUFFER_SIZE + 1, sizeof(char));
 		if(read_buffer == NULL)
-		{
-			if(*full_string != NULL)
-				free(full_string); 
 			return (-1);
-		}
 		control = read(fd, read_buffer, BUFFER_SIZE);
 		if (get_position_of_first_newline(read_buffer) >= 0)
 			i = -1;
-		if (control == 0)
+		if (control <= 0)
 			return (0);
 		p = *full_string;
 		*full_string = ft_strjoin1(read_buffer, p);
@@ -45,40 +41,39 @@ int	fill_buffer(char **full_string, int fd)
 	return (1);
 }
 
-int	get_return_value(char **string_to_return, char **full_string, int control)
+void	get_return_value(char **string_to_return, char **full_string)
 {
-	char *p;
-	int shift;
+	long	position;
+	char	*to_delete;
 
-	if(control == 0)
-	{
-		*string_to_return = NULL;
-		return (-1);
-	}
-	
-	shift = get_position_of_first_newline(*full_string);
-	if (shift < 0)
-		shift = 0;
-	p = *full_string + shift;
-	free(*full_string);
-	*full_string = ft_strjoin1(p,"");
-	*string_to_return = ft_substr1(p, 0, ft_strlen1(p));
-	//free(p);
-	return (0);
+	position = get_position_of_first_newline(*full_string);
+	if (position < 0)
+		return (*full_string);
+	*string_to_return = ft_substr1(*full_string, 0, position + 1);
+	to_delete = *full_string;
+	*full_string = ft_strjoin1(full_string + position + 1, "");
+	free(to_delete);
 }
 
 char	*get_next_line(int fd)
 {
 	char		*string_to_return;
 	static char	*full_string = NULL;
-	int			control;
+	static int	control = 1;
 
-	control = 0;
 	string_to_return = NULL;
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	if (get_position_of_first_newline(full_string) < 0)
+	if (get_position_of_first_newline(full_string) < 0 || control == 0)
+	{
 		control = fill_buffer(&full_string, fd);
-	get_return_value(&string_to_return, &full_string, control);
+		if(control == -1)
+		{
+			if (full_string != NULL)
+				free (full_string);
+			return (NULL);
+		}
+	}
+	get_return_value(&string_to_return, &full_string);
 	return (string_to_return);
 }
