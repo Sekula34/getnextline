@@ -12,6 +12,18 @@
 
 #include "get_next_line.h"
 
+void	set_empty_to_null(char **full_string, char **string_to_return)
+{
+	if (*string_to_return != NULL)
+	{
+		if (*string_to_return[0] == '\0')
+		{
+			free(*full_string);
+			*string_to_return = NULL;
+		}
+	}
+}
+
 int	fill_buffer(char **full_string, int fd)
 {
 	int		i;
@@ -81,5 +93,6 @@ char	*get_next_line(int fd)
 		}
 	}
 	get_return_value(&string_to_return, &full_string, &control);
+	set_empty_to_null(&full_string, &string_to_return);
 	return (string_to_return);
 }
