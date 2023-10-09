@@ -52,7 +52,7 @@ long	get_position_of_first_newline(char *s)
 {
 	long	i;
 
-	if(s == NULL)
+	if (s == NULL)
 		return (-2);
 	i = 0;
 	while (s[i] != '\0')

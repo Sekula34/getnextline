@@ -20,10 +20,10 @@ int	fill_buffer(char **full_string, int fd)
 	char	*p;
 
 	i = 1;
-	while(i)
+	while (i)
 	{
 		read_buffer = ft_calloc1(BUFFER_SIZE + 1, sizeof(char));
-		if(read_buffer == NULL)
+		if (read_buffer == NULL)
 			return (-1);
 		control = read(fd, read_buffer, BUFFER_SIZE);
 		if (get_position_of_first_newline(read_buffer) >= 0)
@@ -40,7 +40,7 @@ int	fill_buffer(char **full_string, int fd)
 	return (1);
 }
 
-void	get_return_value(char **string_to_return, char **full_string, int *control)
+void	get_return_value(char **ret_str, char **full_string, int *control)
 {
 	long	position;
 	char	*to_delete;
@@ -48,12 +48,12 @@ void	get_return_value(char **string_to_return, char **full_string, int *control)
 	position = get_position_of_first_newline(*full_string);
 	if (position < 0)
 	{
-		*string_to_return = *full_string;
+		*ret_str = *full_string;
 		*control = -1;
 		return ;
 	}
-	*string_to_return = ft_substr1(*full_string, 0, position + 1);
-	if(*string_to_return == NULL)
+	*ret_str = ft_substr1(*full_string, 0, position + 1);
+	if (*ret_str == NULL)
 		return (free(*full_string));
 	to_delete = *full_string;
 	*full_string = ft_strjoin1(*full_string + position + 1, "");
@@ -71,12 +71,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (get_position_of_first_newline(full_string) < 0 || control == 0)
 	{
-		if(control != 0)
+		if (control != 0)
 			control = fill_buffer(&full_string, fd);
-		if(control == -1)
+		if (control == -1)
 		{
-			if(full_string != NULL)
-				free (full_string); //can be null before
+			if (full_string != NULL)
+				free (full_string);
 			return (NULL);
 		}
 	}
