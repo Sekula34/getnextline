@@ -100,6 +100,8 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 	if (start >= ft_strlen1(s) || len == 0)
 	{
 		p = ft_calloc1(1, 1);
+		if (!p)
+			return (NULL);
 		return (p);
 	}
 	if (len > ft_strlen1(s + start))

@@ -38,10 +38,10 @@ int	fill_buffer(char **full_string, int fd)
 		if (read_buffer == NULL)
 			return (-1);
 		control = read(fd, read_buffer, BUFFER_SIZE);
-		if (get_position_of_first_newline(read_buffer) >= 0)
-			i = 0;
 		if (control <= 0)
 			return (free(read_buffer), control);
+		if (get_position_of_first_newline(read_buffer) >= 0)
+			i = 0;
 		p = *full_string;
 		*full_string = ft_strjoin1(p, read_buffer);
 		free (p);
@@ -69,6 +69,11 @@ void	get_return_value(char **ret_str, char **full_string, int *control)
 		return (free(*full_string));
 	to_delete = *full_string;
 	*full_string = ft_strjoin1(*full_string + position + 1, "");
+	if(*full_string == NULL)
+	{
+		free(ret_str); 
+		ret_str = NULL;
+	}
 	free(to_delete);
 }
 
@@ -90,6 +95,7 @@ char	*get_next_line(int fd)
 			if (full_string != NULL)
 				free (full_string);
 			full_string = NULL;
+			control = 1;
 			return (NULL);
 		}
 	}
