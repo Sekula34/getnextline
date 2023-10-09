@@ -89,6 +89,7 @@ char	*get_next_line(int fd)
 		{
 			if (full_string != NULL)
 				free (full_string);
+			full_string = NULL;
 			return (NULL);
 		}
 	}
