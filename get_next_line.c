@@ -39,9 +39,9 @@ int	fill_buffer(char **full_string, int fd)
 			return (-1);
 		control = read(fd, read_buffer, BUFFER_SIZE);
 		if (get_position_of_first_newline(read_buffer) >= 0)
-			i = -1;
+			i = 0;
 		if (control <= 0)
-			return (free(read_buffer), 0);
+			return (free(read_buffer), control);
 		p = *full_string;
 		*full_string = ft_strjoin1(p, read_buffer);
 		free (p);
