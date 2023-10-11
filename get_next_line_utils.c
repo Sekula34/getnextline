@@ -12,13 +12,13 @@
 
 #include "get_next_line.h"
 
-
-void *free_and_NULL(char **full_string)
+void	*free_and_null(char **full_string)
 {
-	free(*full_string); 
+	free(*full_string);
 	*full_string = NULL;
-	return(NULL);
+	return (NULL);
 }
+
 size_t	ft_strlen1(const char *s)
 {
 	size_t	i;
@@ -83,11 +83,6 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 	size_t	i;
 
 	i = 0;
-	// if (start >= ft_strlen(s) || len == 0)
-	// {
-	// 	p = ft_calloc(1, 1);
-	// 	return (p);
-	// }
 	if (len > ft_strlen1(s + start))
 		len = ft_strlen1(s + start);
 	p = malloc((len + 1) * sizeof(char));
@@ -102,4 +97,3 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 	p[i] = '\0';
 	return (p);
 }
-

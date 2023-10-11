@@ -14,18 +14,12 @@
 
 void	clean_buffer(char **full_string, char *string_to_return)
 {
-	char *to_delete;
+	char	*to_delete;
 	int		pos_nl;
 
-	if(full_string == NULL)
-		return;
+	if (full_string == NULL)
+		return ;
 	pos_nl = ft_strlen1(string_to_return);
-	// if(ft_strlen1(*full_string) == ft_strlen1(string_to_return))
-	// {
-	// 	free(*full_string);
-	// 	*full_string = NULL;
-	// 	return ;
-	// }
 	to_delete = *full_string;
 	*full_string = ft_strjoin1(*full_string + pos_nl, NULL);
 	free(to_delete);
@@ -33,19 +27,19 @@ void	clean_buffer(char **full_string, char *string_to_return)
 
 char	*get_return_value(char *full_string)
 {
-	int position_of_newline;
+	int	position_of_newline;
 
-	if(full_string == NULL || full_string[0] == '\0')
+	if (full_string == NULL || full_string[0] == '\0')
 		return (NULL);
 	position_of_newline = get_position_of_first_newline(full_string);
-	if(position_of_newline <= -1)
+	if (position_of_newline <= -1)
 		position_of_newline = ft_strlen1(full_string) - 1;
 	return (ft_substr1(full_string, 0, position_of_newline + 1));
-
 }
-void delete_old_buf(char **buffer, char *helper_var)
+
+void	delete_old_buf(char **buffer, char *helper_var)
 {
-	char *to_delete;
+	char	*to_delete;
 
 	to_delete = *buffer;
 	*buffer = ft_strjoin1(*buffer, helper_var);
@@ -56,7 +50,6 @@ int	buffer_filler(char **buffer, int fd)
 {
 	char		*helper_var;
 	long long	read_val;
-	//char *delete;
 
 	while (1)
 	{
@@ -68,21 +61,17 @@ int	buffer_filler(char **buffer, int fd)
 			return (free(helper_var), read_val);
 		helper_var[read_val] = '\0';
 		delete_old_buf(buffer, helper_var);
-		// delete = *buffer;
-		// *buffer = ft_strjoin1(*buffer, helper_var);
-		// free (delete);
-		if(*buffer == NULL)
-			return(free(helper_var), -1); 
+		if (*buffer == NULL)
+			return (free(helper_var), -1);
 		if (get_position_of_first_newline(helper_var) >= 0)
 		{
 			free (helper_var);
-			break;
+			break ;
 		}
 		free(helper_var);
 	}
 	return (1);
 }
-
 
 char	*get_next_line(int fd)
 {
@@ -97,11 +86,11 @@ char	*get_next_line(int fd)
 	{
 		status = buffer_filler(&full_string, fd);
 		if (status == -1)
-			return(free_and_NULL(&full_string));
+			return (free_and_null(&full_string));
 	}
 	string_to_return = get_return_value(full_string);
-	if(string_to_return == NULL)
-		return(free_and_NULL(&full_string));
+	if (string_to_return == NULL)
+		return (free_and_null(&full_string));
 	clean_buffer(&full_string, string_to_return);
 	return (string_to_return);
 }
