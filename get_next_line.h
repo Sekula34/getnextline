@@ -22,7 +22,7 @@ size_t	ft_strlen1(const char *s);
 long	get_position_of_first_newline(char *s);
 char	*ft_strjoin1(char const *s1, char const *s2);
 char	*ft_substr1(char const *s, unsigned int start, size_t len);
-void	*free_and_NULL(char **full_string);
+void	*free_and_null(char **full_string);
 char	*get_next_line(int fd);
 
 #endif
